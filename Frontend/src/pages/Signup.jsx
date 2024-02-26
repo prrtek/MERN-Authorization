@@ -1,20 +1,30 @@
 import React, { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [redirect, setRedirect] = useState(false);
 
   async function register(e) {
     e.preventDefault();
-    await fetch("http://localhost:3000/register", {
+    const res = await fetch("http://localhost:3000/register", {
       method: "POST",
       body: JSON.stringify({ name, email, password }),
       headers: {
         "Content-Type": "application/json",
       },
     });
+    if (res.ok) {
+      setRedirect(true);
+    } else {
+      alert("Hellooooo");
+    }
+  }
+  if (redirect) {
+    return <Navigate to='/login' />;
   }
   return (
     <section className='rounded-md bg-black/80 p-2'>
